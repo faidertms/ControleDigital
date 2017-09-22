@@ -7,8 +7,8 @@ Seguidor de Parede utilizando Arduino
   foram usados servos motores, sensores tipo ultrassónico, arduino como controlador e para ajustar a malha PID foi usada a 
   técnica “tentativa e erro”.<br />
   <p align="center">
-  ![Alt text](https://i.imgur.com/nJyJisb.png)<br />
-  __Figura do Carro__
+  <img src="https://i.imgur.com/nJyJisb.png"><br/>
+  <b>Figura do Carro</b>
   </p>
                                           
 					     
