@@ -5,8 +5,8 @@ Seguidor de Parede utilizando Arduino
   Este projeto tem como objetivo geral a montagem e a configuração do hardware, bem como a implementação de funções de um robô 
   móvel que seja hábil a locomover-se de maneira autônoma com base na percepção de uma parede. Para a realização deste objetivo 
   foram usados servos motores, sensores tipo ultrassónico, arduino como controlador e para ajustar a malha PID foi usada a 
-  técnica “tentativa e erro”.
-  ![Alt text](https://i.imgur.com/nJyJisb.png
+  técnica “tentativa e erro”.<br />
+  ![Alt text](https://i.imgur.com/nJyJisb.png)<br />
   __Figura do Carro__
                                           
 					     
