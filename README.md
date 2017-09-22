@@ -7,7 +7,7 @@ Seguidor de Parede utilizando Arduino
   foram usados servos motores, sensores tipo ultrassónico, arduino como controlador e para ajustar a malha PID foi usada a 
   técnica “tentativa e erro”.
   
-                                           ![carro](https://i.imgur.com/nJyJisb.png)
+                                          ![carro](https://i.imgur.com/nJyJisb.png)
                                             __Figura 1 – Robô seguidor de parede.__
 					     
 # 2. Colaboradores 
