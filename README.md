@@ -8,7 +8,7 @@ Seguidor de Parede utilizando Arduino
   técnica “tentativa e erro”.
   
                                           ![carro](https://i.imgur.com/nJyJisb.png)
-                                            __Figura 1 – Robô seguidor de parede.__
+                                            Figura 1 – Robô seguidor de parede.
 					     
 # 2. Colaboradores 
 
@@ -19,5 +19,5 @@ Seguidor de Parede utilizando Arduino
   
 # 3. Relatorio
   
-                      [Sites Using React](https://github.com/faidertms/ControleDigital/blob/master/Relatorio%20Controle%20Digital.pdf)                       
+                                        
                                 
