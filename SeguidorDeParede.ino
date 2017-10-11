@@ -50,7 +50,8 @@ int distancia;
 int ultimaDistancia;
 int erro,x,y,dt;
 int kd=10,kp=3;
-float i,ki = 0.001;
+double errSum, lastErr;
+float i,d,ki = 0.001;
 int cons = 15;
 
 void definirErro(int setPoint){ 
@@ -58,9 +59,13 @@ void definirErro(int setPoint){
   distancia = calcularDistancia(echoLateral,trigLateral);
   if(distancia > 0){
     erro =  setPoint - distancia;
-    i += (erro*dt*ki);
-    x = cons + ((erro*kp) + (kd*(distancia - ultimaDistancia)/dt) + i);
-    y = cons - ((erro*kp) + (kd*(distancia - ultimaDistancia)/dt) + i);
+    errSum += (erro * dt);
+    double dErr = (error - lastErr) / dt;
+    i = ki * errSum;
+    d = kd * dErr;
+    x = cons + ((erro*kp) + d + i);
+    y = cons - ((erro*kp) + d + i);
+    lastErr = error;
   }
   if(distancia == 0){
     x = 10;
