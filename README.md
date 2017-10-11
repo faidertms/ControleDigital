@@ -4,7 +4,7 @@ Projeto seguidor de Parede.<br />
 # Equipe: 
 
   -<a href="https://github.com/edsongjr">Edson Junior 1310780/7 </a><br />
-  -Lucas Abrantes 1320653/8 <br />
+  -<a href="https://github.com/Lucasabrants">Lucas Abrantes 1320653/8 </a><br />
   -<a href="https://github.com/Rodrigogcosta">Rodrigo Costa 1320661/9 </a><br />
   -<a href="https://github.com/faidertms">Thiago Sales 1410702/9</a><br />
 
