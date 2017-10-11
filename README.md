@@ -22,7 +22,7 @@ Projeto seguidor de Parede.<br />
  # 1.1	Atuadores
 •	2 servos motores.<br />
    <p align="justify">
-   Um servo motor é um atuador rotativo ou linear que garante o controle, velocidade e precisão em aplicações de controle de posição em    malha fechada.</p><br />
+   Um servo motor é um atuador rotativo ou linear que garante o controle, velocidade e precisão em aplicações de controle de posição em    malha fechada.</p>
    
  #   1.2	Sensores
 •	2 sensores ultrassónicos.<br />
