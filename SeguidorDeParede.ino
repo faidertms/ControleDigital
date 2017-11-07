@@ -20,6 +20,9 @@ void setup( ){
   rodaDireita.attach(6);
   rodaEsquerda.write(90);
   rodaDireita.write(90);
+  setAmostra(30);
+  setTunings(3,0.001,10);
+  Serial.begin(9600);
 }
 
 int dispararPulso (int pinEcho, int pinTrig){
@@ -46,31 +49,58 @@ void frente(int velocidadeD, int velocidadeE){
   rodaDireita.write((90-velocidadeD));
 }
 
-int distancia;
-int ultimaDistancia;
-int erro,x,y,dt;
-int kd=10,kp=3;
+double distancia;
+double ultimaDistancia;
+double erro,dt;
+int x,y;
+double kd,kp,ki,i,d;
 double errSum, lastErr;
-float i,d,ki = 0.001;
 int cons = 15;
+int amostra = 1000; // 1seg
 
-void definirErro(int setPoint){ 
-  ultimaDistancia = distancia;
-  distancia = calcularDistancia(echoLateral,trigLateral);
-  if(distancia > 0){
-    erro =  setPoint - distancia;
-    errSum += (erro * dt);
-    double dErr = (error - lastErr) / dt;
-    i = ki * errSum;
-    d = kd * dErr;
-    x = cons + ((erro*kp) + d + i);
-    y = cons - ((erro*kp) + d + i);
-    lastErr = error;
-  }
-  if(distancia == 0){
-    x = 10;
-    y = 15;
-  }
+void definirErro(int setPoint){ 
+
+  calcularTempo();
+
+  distancia = calcularDistancia(echoLateral,trigLateral);
+
+  if(distancia > 0 && dt >= amostra){
+    Serial.println(distancia);
+    erro =  setPoint - distancia;
+    if(errSum >= 50){
+      errSum = 0;
+    }
+    errSum += erro;
+    double dDistancia = (distancia - ultimaDistancia);
+    i = ki * errSum;
+    d = kd * dDistancia;
+    x = cons + ((erro*kp) - d + i);
+    y = cons - ((erro*kp) - d + i);
+    ultimaDistancia = distancia;
+    //lastErr = error;
+    dt = 0;
+  }
+
+  if(distancia == 0){
+    x = 10;
+    y = 15;
+  }
+}
+
+void setTunings(double Kp, double Ki , double Kd){
+  double amostraEmSeg = ((double)amostra/1000);
+  kp = Kp;
+  ki = Ki * amostra;
+  kd = Kd / amostra;
+}
+
+void setAmostra(int Amostra){
+  if(Amostra > 0){
+    double ratio = (double)Amostra / (double)amostra;
+    ki *= ratio;
+    kd /= ratio;
+    amostra = (unsigned long)Amostra;
+  }
 }
 
 int temp ;
@@ -78,7 +108,7 @@ int tempFinal = millis();
 void calcularTempo(){
   temp = tempFinal;
   tempFinal = millis();
-  dt = (tempFinal - temp);
+  dt += (tempFinal - temp);
 }
 
 int distanciaFrontal;
@@ -97,7 +127,5 @@ void definirRota(){
 }
 
 void loop() {
-  calcularTempo();
-  delay(5);
   definirRota();
 }
