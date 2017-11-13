@@ -81,6 +81,7 @@ void definirErro(int setPoint){ 
     d = kd * dDistancia;
     x = cons + ((erro*kp) - d + i);
     y = cons - ((erro*kp) - d + i);
+    limiteXY();
     ultimaDistancia = distancia;
     //lastErr = error;
     dt = 0;
@@ -90,6 +91,20 @@ void definirErro(int setPoint){ 
     x = 10;
     y = 15;
   }
+}
+
+void limiteXY(){
+   if(x > outMax){ 
+    x = outMax;
+   }else if(x < outMin){
+    x = outMin;
+   }
+
+   if(y > outMax){ 
+    y = outMax;
+   }else if(y < outMin){
+    y = outMin;
+   }
 }
 
 void SetOutputLimits(double Min, double Max) // RESET WIDNUP
