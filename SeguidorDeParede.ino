@@ -57,7 +57,7 @@ double kd,kp,ki,i,d;
 double errSum, lastErr;
 int cons = 15;
 int amostra = 1000; // 1seg
-
+double outMin, outMax;
 void definirErro(int setPoint){ 
 
   calcularTempo();
@@ -67,12 +67,17 @@ void definirErro(int setPoint){ 
   if(distancia > 0 && dt >= amostra){
     Serial.println(distancia);
     erro =  setPoint - distancia;
-    if(errSum >= 50){
+   /* if(errSum >= 50){
       errSum = 0;
     }
-    errSum += erro;
+    errSum += erro; faz parte do sample TIME*/
     double dDistancia = (distancia - ultimaDistancia);
-    i = ki * errSum;
+    i += ki * erro; //Tuning Changes
+    if(i > outMax){// +90
+     i = outMax;
+    }else if(i < outMin){ // -90
+     i = outMin;
+    }
     d = kd * dDistancia;
     x = cons + ((erro*kp) - d + i);
     y = cons - ((erro*kp) - d + i);
@@ -85,6 +90,25 @@ void definirErro(int setPoint){ 
     x = 10;
     y = 15;
   }
+}
+
+void SetOutputLimits(double Min, double Max) // RESET WIDNUP
+{
+   if(Min < Max){
+     outMin = Min;
+     outMax = Max;
+   }
+   if(Output > outMax){
+    Output = outMax;
+   }else if(Output < outMin){
+    Output = outMin;
+   }
+ 
+   if(i > outMax){
+    i = outMax;
+   }else if(i < outMin){
+    i = outMin;
+   }
 }
 
 void setTunings(double Kp, double Ki , double Kd){
