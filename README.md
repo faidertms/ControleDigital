@@ -25,7 +25,7 @@ Projeto seguidor de Parede.<br />
    Um servo motor é um atuador rotativo ou linear que garante o controle, velocidade e precisão em aplicações de controle de posição em    malha fechada.</p>
    
  #   1.2	Sensores
-•	2 sensores ultrassónicos.<br />
+•	2 sensores ultrassônicos.<br />
    <p align="justify">
    Os sensores ultrassónicos são amplamente utilizados para a percepção do ambiente e detecção de obstáculos em muitas aplicações          robóticas. Estes sensores são muito bem sucedidos em termos de eficiência de custos, tempo de processamento e precisão.</p>
    
