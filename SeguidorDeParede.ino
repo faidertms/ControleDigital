@@ -152,11 +152,11 @@ void calcularTempo(){
 
 int distanciaFrontal;
 void definirRota(){
-  distanciaFrontal = calcularDistancia(echoFrontal,trigFrontal);
+  distanciaFrontal = calcularDistancia(echoFrontal, trigFrontal);
   if(distanciaFrontal > 0 && distanciaFrontal <= 12){
-    esquerda(20,20);
+    esquerda(20, 20);
     delay(1000);
-    i=0;
+    i = 0;
     distancia = 0;
     distanciaFrontal = 0;
   }else{
