@@ -37,10 +37,10 @@ Projeto seguidor de Parede.<br />
 #  1.4	Lista de Materiais
 •	Corpo<br />
 •	Chapa metálica.<br />
-•	Rodas para servo motor.<br />
-•	Protoboard e fiação.<br />
 •	2 Servos Motores(MG-995).<br />
-•	2 Sensores Ultrassónicos(HC-SR04).<br />
+•	2 Rodas para servo motor.<br />
+•	Protoboard e fiação.<br />
+•	2 Sensores Ultrassônicos(HC-SR04).<br />
 •	Arduino Uno.
 <br />
 					     
