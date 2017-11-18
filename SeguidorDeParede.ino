@@ -9,12 +9,12 @@ int echoLateral = 8;
 int trigLateral = 7;
 
 void setup( ){
-  pinMode(trigFrontal,OUTPUT); 
-  pinMode(echoFrontal,INPUT);
-  pinMode(trigLateral,OUTPUT);
-  pinMode(echoLateral,INPUT);
-  digitalWrite(trigFrontal,LOW);
-  digitalWrite(trigLateral,LOW);
+  pinMode(trigFrontal, OUTPUT); 
+  pinMode(echoFrontal, INPUT);
+  pinMode(trigLateral, OUTPUT);
+  pinMode(echoLateral, INPUT);
+  digitalWrite(trigFrontal, LOW);
+  digitalWrite(trigLateral, LOW);
   rodaEsquerda.attach(5);
   delay(1);
   rodaDireita.attach(6);
@@ -30,30 +30,30 @@ int dispararPulso (int pinEcho, int pinTrig){
   digitalWrite(pinTrig, HIGH);
   delayMicroseconds(10);
   digitalWrite(pinTrig, LOW);
-  tempo = pulseIn(pinEcho, HIGH,4500);
+  tempo = pulseIn(pinEcho, HIGH, 4500);
   return tempo;
 }
 
 int calcularDistancia (int pinEcho, int pinTrig){
-  return dispararPulso(pinEcho,pinTrig)/29.4/2;
+  return dispararPulso(pinEcho, pinTrig)/29.4/2;
 }
 
-void esquerda(int velocidadeD,int velocidadeE){
-  rodaEsquerda.write((90-velocidadeD));
-  rodaDireita.write((90-velocidadeE));
+void esquerda(int velocidadeD, int velocidadeE){
+  rodaEsquerda.write((90 - velocidadeD));
+  rodaDireita.write((90 - velocidadeE));
 }
 
 void frente(int velocidadeD, int velocidadeE){
   velocidadeE = (velocidadeE / 1.5);
-  rodaEsquerda.write((90+velocidadeE));
-  rodaDireita.write((90-velocidadeD));
+  rodaEsquerda.write((90 + velocidadeE));
+  rodaDireita.write((90 - velocidadeD));
 }
 
 double distancia;
 double ultimaDistancia;
-double erro,dt;
-int x,y;
-double kd,kp,ki,i,d;
+double erro, dt;
+int x, y;
+double kd, kp, ki, i, d;
 double errSum, lastErr;
 int cons = 15;
 int amostra = 1000; // 1seg
@@ -62,7 +62,7 @@ void definirErro(int setPoint){ 
 
   calcularTempo();
 
-  distancia = calcularDistancia(echoLateral,trigLateral);
+  distancia = calcularDistancia(echoLateral, trigLateral);
 
   if(distancia > 0 && dt >= amostra){
     Serial.println(distancia);
