@@ -27,7 +27,7 @@ Projeto seguidor de Parede.<br />
  #   1.2	Sensores
 •	2 sensores ultrassônicos.<br />
    <p align="justify">
-   Os sensores ultrassônicos são amplamente utilizados para a percepção do ambiente e detecção de obstáculos em muitas aplicações          robóticas. Estes sensores são muito bem sucedidos em termos de eficiência de custos, tempo de processamento e precisão.</p>
+   Os sensores ultrassônicos são amplamente utilizados para a percepção do ambiente e detecção de obstáculos em muitas aplicações robóticas. Estes sensores são muito bem sucedidos em termos de eficiência de custos, tempo de processamento e precisão.</p>
    
 #  1.3	Controlador
 •	Arduino UNO.<br />
