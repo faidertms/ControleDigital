@@ -44,7 +44,7 @@ Projeto seguidor de Parede.<br />
 •	Arduino Uno.
 <br />
 					     
-# 2.	Embasamento teórico/pratico
+# 2.	Embasamento teórico/prático
 # 2.1   Fluxograma
   <p align="justify">
   O fluxograma mostrado na figura 2 ilustra a cadeia de eventos que ocorre no programa desenvolvido. O cálculo do tempo de execução do     código é utilizado para encontrar “dt” para que possamos encontrar “kd” e “ki”, posteriormente é disparado um delay de 5 milissegundos   para iniciar a leitura do sensor ultrassônico (foi necessário esse delay, pois foi observado que inicialmente estavam sendo feitas       várias leituras de valores zeros). Depois da leitura o programa define uma rota com base na distância calculada pelo sensor frontal.     Nesse caso, se for detectado um obstáculo a 12 centímetros pelo sensor frontal então o carro vira pra esquerda e volta ao primeiro       evento do programa, caso contrário ele continua o seu trajeto normal realizando as correções necessárias com base nos valores           detectados pelo sensor lateral, para mantê-lo a 20 centímetros da parede. Mais detalhes do funcionamento do sistema são mostrados no     tópico 3(Implementação).</p>
