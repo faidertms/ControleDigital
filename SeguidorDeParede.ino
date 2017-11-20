@@ -36,7 +36,7 @@ int dispararPulso (int pinEcho, int pinTrig){
 }
 
 int calcularDistancia (int pinEcho, int pinTrig){
-  return dispararPulso(pinEcho, pinTrig)/29.4/2;
+  return (dispararPulso(pinEcho, pinTrig)/29.4)/2;
 }
 
 void esquerda(int velocidadeD, int velocidadeE){
