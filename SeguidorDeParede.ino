@@ -22,6 +22,7 @@ void setup( ){
   rodaDireita.write(90);
   setAmostra(30);
   setTunings(3,0.001,10);
+  SetOutputLimits(0,180);
   Serial.begin(9600);
 }
 
