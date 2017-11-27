@@ -28,7 +28,7 @@ void setup( ){
   digitalWrite(IN4,LOW);
 
   setAmostra(10);//10
-  setTunings(2,0.22,0.04);//2 0.07 0  // 2 0.2 0.03
+  setTunings(2,1.9,0.005);
   SetOutputLimits(140,170);// cons 110 e 100 - 140
 
 }
