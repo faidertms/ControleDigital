@@ -1,98 +1,114 @@
-#include <Servo.h>
-
-Servo rodaDireita;
-Servo rodaEsquerda;
- 
-int echoFrontal = 2;
-int trigFrontal = 3;
-int echoLateral = 8;
-int trigLateral = 7;
+int ENA = 3;
+int ENB = 5; 
+int IN1 = 7;
+int IN2 = 8;
+int IN3 = 6;
+int IN4 = 9; 
+int echoLateral = 10;
+int trigLateral = 11;
 
 void setup( ){
-  pinMode(trigFrontal, OUTPUT); 
-  pinMode(echoFrontal, INPUT);
+
+  pinMode(ENA,OUTPUT);
+  pinMode(ENB,OUTPUT);
+  pinMode(IN1,OUTPUT);
+  pinMode(IN2,OUTPUT);
+  pinMode(IN3,OUTPUT);
+  pinMode(IN4,OUTPUT);
+
   pinMode(trigLateral, OUTPUT);
   pinMode(echoLateral, INPUT);
-  digitalWrite(trigFrontal, LOW);
+
   digitalWrite(trigLateral, LOW);
-  rodaEsquerda.attach(5);
-  delay(1);
-  rodaDireita.attach(6);
-  rodaEsquerda.write(90);
-  rodaDireita.write(90);
-  setAmostra(30);
-  setTunings(3,0.001,10);
-  SetOutputLimits(0,180);
-  Serial.begin(9600);
+  digitalWrite(ENA,LOW);
+  digitalWrite(ENB,LOW);
+  digitalWrite(IN1,LOW);
+  digitalWrite(IN2,LOW);
+  digitalWrite(IN3,LOW);
+  digitalWrite(IN4,LOW);
+
+  setAmostra(10);//10
+  setTunings(2,0.22,0.04);//2 0.07 0  // 2 0.2 0.03
+  SetOutputLimits(140,170);// cons 110 e 100 - 140
+
 }
+
+
 
 int dispararPulso (int pinEcho, int pinTrig){
   float tempo;
   digitalWrite(pinTrig, HIGH);
   delayMicroseconds(10);
   digitalWrite(pinTrig, LOW);
-  tempo = pulseIn(pinEcho, HIGH, 4500);
+  tempo = pulseIn(pinEcho, HIGH,5000);//4500
   return tempo;
 }
+
+
 
 int calcularDistancia (int pinEcho, int pinTrig){
   return (dispararPulso(pinEcho, pinTrig)/29.4)/2;
 }
 
-void esquerda(int velocidadeD, int velocidadeE){
-  rodaEsquerda.write((90 - velocidadeD));
-  rodaDireita.write((90 - velocidadeE));
+
+
+void frente(int velocidadeMotor1, int velocidadeMotor2){
+  digitalWrite(IN1,LOW);
+  digitalWrite(IN2,HIGH);
+  digitalWrite(IN3,LOW);
+  digitalWrite(IN4,HIGH);
+
+  analogWrite(ENA,velocidadeMotor1);
+  velocidadeMotor2 *= 1.05;
+  analogWrite(ENB,velocidadeMotor2);
+
 }
 
-void frente(int velocidadeD, int velocidadeE){
-  velocidadeE = (velocidadeE / 1.5);
-  rodaEsquerda.write((90 + velocidadeE));
-  rodaDireita.write((90 - velocidadeD));
-}
-
-double distancia;
+double distancia = 0;
 double ultimaDistancia;
 double erro, dt;
 int x, y;
 double kd, kp, ki, i, d;
 double errSum, lastErr;
-int cons = 15;
+int cons = 140;
 int amostra = 1000; // 1seg
 double outMin, outMax;
-void definirErro(int setPoint){ 
 
-  calcularTempo();
+void definirErro(int setPoint){ 
+  calcularTempo();
+  if(dt >= amostra){
+      distancia = calcularDistancia(echoLateral, trigLateral);
+      if(distancia > 0 && distancia < 90){
+        erro =  setPoint - distancia;
+        double dDistancia = (distancia - ultimaDistancia);
+        i += ki * erro; //Tuning Changes
+        if(i > 15){// +15
+         i = 0;
+        }else if(i < -15){ // -15
+         i = 0;
+        }
+  
+        d = kd * dDistancia;
+        int teste = (erro*kp);
+        x = cons + (teste - d + i);
+        y = cons - (teste - d + i);
+        limiteXY();
+        ultimaDistancia = distancia;
+      }
+      dt = 0;
+  }
 
-  distancia = calcularDistancia(echoLateral, trigLateral);
-
-  if(distancia > 0 && dt >= amostra){
-    Serial.println(distancia);
-    erro =  setPoint - distancia;
-   /* if(errSum >= 50){
-      errSum = 0;
-    }
-    errSum += erro; faz parte do sample TIME*/
-    double dDistancia = (distancia - ultimaDistancia);
-    i += ki * erro; //Tuning Changes
-    if(i > outMax){// +90
-     i = outMax;
-    }else if(i < outMin){ // -90
-     i = outMin;
-    }
-    d = kd * dDistancia;
-    x = cons + ((erro*kp) - d + i);
-    y = cons - ((erro*kp) - d + i);
-    limiteXY();
-    ultimaDistancia = distancia;
-    //lastErr = error;
-    dt = 0;
-  }
-
-  if(distancia == 0){
-    x = 10;
-    y = 15;
-  }
 }
+
+
+
+void control(){
+  if(x >= 0 && y>= 0){    
+    frente(x,y); 
+  }
+}
+
+
 
 void limiteXY(){
    if(x > outMax){ 
@@ -100,7 +116,6 @@ void limiteXY(){
    }else if(x < outMin){
     x = outMin;
    }
-
    if(y > outMax){ 
     y = outMax;
    }else if(y < outMin){
@@ -108,64 +123,51 @@ void limiteXY(){
    }
 }
 
-void SetOutputLimits(double Min, double Max) // RESET WIDNUP
-{
+
+void SetOutputLimits(double Min, double Max) // RESET WIDNUP{
    if(Min < Max){
      outMin = Min;
      outMax = Max;
    }
-   if(Output > outMax){
-    Output = outMax;
-   }else if(Output < outMin){
-    Output = outMin;
-   }
- 
-   if(i > outMax){
-    i = outMax;
-   }else if(i < outMin){
-    i = outMin;
-   }
 }
+
+
 
 void setTunings(double Kp, double Ki , double Kd){
-  double amostraEmSeg = ((double)amostra/1000);
-  kp = Kp;
-  ki = Ki * amostra;
-  kd = Kd / amostra;
+  double amostraEmSeg = ((double)amostra/1000);
+  kp = Kp;
+  ki = Ki * amostraEmSeg;
+  kd = Kd / amostraEmSeg;
 }
+
+
 
 void setAmostra(int Amostra){
-  if(Amostra > 0){
-    double ratio = (double)Amostra / (double)amostra;
-    ki *= ratio;
-    kd /= ratio;
-    amostra = (unsigned long)Amostra;
-  }
-}
 
-int temp ;
-int tempFinal = millis();
-void calcularTempo(){
-  temp = tempFinal;
-  tempFinal = millis();
-  dt += (tempFinal - temp);
-}
+  if(Amostra > 0){
 
-int distanciaFrontal;
-void definirRota(){
-  distanciaFrontal = calcularDistancia(echoFrontal, trigFrontal);
-  if(distanciaFrontal > 0 && distanciaFrontal <= 12){
-    esquerda(20, 20);
-    delay(1000);
-    i = 0;
-    distancia = 0;
-    distanciaFrontal = 0;
-  }else{
-    definirErro(20);
-    frente(x,y);
+    double ratio = (double)Amostra / (double)amostra;
+
+    ki *= ratio;
+
+    kd /= ratio;
+
+    amostra = (unsigned long)Amostra;
+
   }
+
 }
+long tempoFinal=0;
+long tempo = 0 ;
+
+void calcularTempo(){
+  tempo = tempoFinal;
+  tempoFinal = millis();
+  dt += (double)(tempoFinal - tempo);
+}
+
 
 void loop() {
-  definirRota();
+ definirErro(30);
+ control();
 }
