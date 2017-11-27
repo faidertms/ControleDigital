@@ -124,7 +124,7 @@ void limiteXY(){
 }
 
 
-void SetOutputLimits(double Min, double Max) // RESET WIDNUP{
+void SetOutputLimits(double Min, double Max){ // RESET WIDNUP{
    if(Min < Max){
      outMin = Min;
      outMax = Max;
