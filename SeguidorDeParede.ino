@@ -26,11 +26,10 @@ void setup( ){
   digitalWrite(IN2,LOW);
   digitalWrite(IN3,LOW);
   digitalWrite(IN4,LOW);
-
-  setAmostra(10);//10
-  setTunings(2,1.9,0.005);
-  SetOutputLimits(140,170);// cons 110 e 100 - 140
-
+  setAmostra(50);//10
+  setTunings(2,0.3,0.1);//2 ,0.2 0.08
+  SetOutputLimits(110,160);//  100 - 140
+  //Serial.begin(9600);
 }
 
 
@@ -40,7 +39,7 @@ int dispararPulso (int pinEcho, int pinTrig){
   digitalWrite(pinTrig, HIGH);
   delayMicroseconds(10);
   digitalWrite(pinTrig, LOW);
-  tempo = pulseIn(pinEcho, HIGH,5000);//4500
+  tempo = pulseIn(pinEcho, HIGH);//,5000);//4500
   return tempo;
 }
 
@@ -60,8 +59,28 @@ void frente(int velocidadeMotor1, int velocidadeMotor2){
 
   analogWrite(ENA,velocidadeMotor1);
   velocidadeMotor2 *= 1.05;
+  if (velocidadeMotor2 > 255) velocidadeMotor2=255;
   analogWrite(ENB,velocidadeMotor2);
 
+}
+void esquerda(int velocidadeMotor1, int velocidadeMotor2){
+  digitalWrite(IN1,LOW);
+  digitalWrite(IN2,HIGH);
+  digitalWrite(IN3,HIGH);
+  digitalWrite(IN4,LOW);
+  analogWrite(ENA,velocidadeMotor1);
+  analogWrite(ENB,velocidadeMotor2+75);//70 65
+    
+}
+
+void direita(int velocidadeMotor1, int velocidadeMotor2){
+  digitalWrite(IN3,LOW);
+  digitalWrite(IN4,HIGH);
+  digitalWrite(IN1,HIGH);
+  digitalWrite(IN2,LOW);
+  analogWrite(ENA,velocidadeMotor1 + 75);//
+  analogWrite(ENB,velocidadeMotor2);
+  
 }
 
 double distancia = 0;
@@ -70,24 +89,24 @@ double erro, dt;
 int x, y;
 double kd, kp, ki, i, d;
 double errSum, lastErr;
-int cons = 140;
-int amostra = 1000; // 1seg
+int cons = 100;
+int amostra = 100; // 1seg
 double outMin, outMax;
 
 void definirErro(int setPoint){ 
   calcularTempo();
   if(dt >= amostra){
       distancia = calcularDistancia(echoLateral, trigLateral);
-      if(distancia > 0 && distancia < 90){
+      if(distancia > 0 && distancia < 60){
         erro =  setPoint - distancia;
         double dDistancia = (distancia - ultimaDistancia);
         i += ki * erro; //Tuning Changes
         if(i > 15){// +15
-         i = 0;
+         i = 15;
         }else if(i < -15){ // -15
-         i = 0;
+         i = -15;
         }
-  
+    //Serial.println(d);
         d = kd * dDistancia;
         int teste = (erro*kp);
         x = cons + (teste - d + i);
@@ -103,8 +122,12 @@ void definirErro(int setPoint){
 
 
 void control(){
-  if(x >= 0 && y>= 0){    
+  if(x >= 0 && y>= 0){
     frente(x,y); 
+  }else if (x < 0 && y> 0){
+    direita(-x,y);
+  }else if(x > 0 && y< 0){
+    esquerda(x,-y);
   }
 }
 
@@ -168,6 +191,6 @@ void calcularTempo(){
 
 
 void loop() {
- definirErro(30);
- control();
+  definirErro(20);
+  control();
 }
