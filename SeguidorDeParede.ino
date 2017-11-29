@@ -108,9 +108,9 @@ void definirErro(int setPoint){
         }
     //Serial.println(d);
         d = kd * dDistancia;
-        int teste = (erro*kp);
-        x = cons + (teste - d + i);
-        y = cons - (teste - d + i);
+        int p = (erro*kp);
+        x = cons + (p - d + i);
+        y = cons - (p - d + i);
         limiteXY();
         ultimaDistancia = distancia;
       }
