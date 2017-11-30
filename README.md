@@ -161,31 +161,42 @@ void definirErro(int setPoint){
   Definindo as variáveis de controle do projeto, para os dois servos motores e os dois sensores ultrassônicos.</p>
    
    ```
-   Servo rodaDireita;
-   Servo rodaEsquerda;
- 
-   int echoFrontal = 2;
-   int trigFrontal = 3;
-   int echoLateral = 8;
-   int trigLateral = 7;
+   int ENA = 3;
+   int ENB = 5; 
+   int IN1 = 7;
+   int IN2 = 8;
+   int IN3 = 6;
+   int IN4 = 9; 
+   int echoLateral = 10;
+   int trigLateral = 11
    ```
     
   <p align="justify"> 
   Na função setup( ) são configurados os pinos utilizados na placa de prototipagem Arduino, essa configuração serve para determinar o     funcionamento de cada um deles, como por exemplo os pinos de trigFrontal e trigLateral, estão configurados para a função saída de       sinal, enquanto que, echoFrontal e echoLateral estão funcionando como entrada. Logo em seguida são determinados os pinos que irão       controlar a velocidade e o sentido da rotação de cada um dos motores, através das funções rodaEsquerda.attach(5) e                       rodaDireita.attach(6).</p>
 
 ```
- void setup( ) {
-   pinMode(trigFrontal,OUTPUT);
-   pinMode(echoFrontal,INPUT);
-   pinMode(trigLateral,OUTPUT);
-   pinMode(echoLateral,INPUT);
-   digitalWrite(trigFrontal,LOW);
-   digitalWrite(trigLateral,LOW);
-   rodaEsquerda.attach(5);
-   delay(1);
-   rodaDireita.attach(6);
-   rodaEsquerda.write(90);
-   rodaDireita.write(90);
+ void setup( ){
+
+  pinMode(ENA,OUTPUT);
+  pinMode(ENB,OUTPUT);
+  pinMode(IN1,OUTPUT);
+  pinMode(IN2,OUTPUT);
+  pinMode(IN3,OUTPUT);
+  pinMode(IN4,OUTPUT);
+
+  pinMode(trigLateral, OUTPUT);
+  pinMode(echoLateral, INPUT);
+
+  digitalWrite(trigLateral, LOW);
+  digitalWrite(ENA,LOW);
+  digitalWrite(ENB,LOW);
+  digitalWrite(IN1,LOW);
+  digitalWrite(IN2,LOW);
+  digitalWrite(IN3,LOW);
+  digitalWrite(IN4,LOW);
+  setAmostra(50);
+  setTunings(2,0.3,0.1);
+  SetOutputLimits(110,160);
 }
 ```
   <p align="justify">
