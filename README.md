@@ -337,13 +337,28 @@ void definirErro(int setPoint){
   
   # 3.2.3  On-the-fly Tuning changes
 <p align="justify">
+A função utilizada para implementar essa melhoria foi a seguinte:
+	
+```
+void setTunings(double Kp, double Ki , double Kd){
+  double amostraEmSeg = ((double)amostra/1000);
+  kp = Kp;
+  ki = Ki * amostraEmSeg;
+  kd = Kd / amostraEmSeg;
+}
    </p>
   
   # 3.2.4  Reset Windup Mitigation
 <p align="justify">
    </p>
+```
+Essa função recebe os valores de kp, ki e kd e os atualiza utilizando o valor da amostragem já definido anteriormente
 
 
+
+ # 3.2.2  Reset WindUp Mitigation
+<p align="justify">
+ : </p>
 
 # 4.	Conclusão
   <p align="justify">
