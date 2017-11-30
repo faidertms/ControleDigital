@@ -138,6 +138,25 @@ Projeto seguidor de Parede.<br />
 ```
 
   <p align="justify">
+  Essa função é utilizada para rotacionar o carro em seu próprio eixo para a frente, e recebe como parãmetros
+	as velocidades das duas rodas.</p>
+
+```
+void frente(int velocidadeMotor1, int velocidadeMotor2){
+  digitalWrite(IN1,LOW);
+  digitalWrite(IN2,HIGH);
+  digitalWrite(IN3,LOW);
+  digitalWrite(IN4,HIGH);
+
+  analogWrite(ENA,velocidadeMotor1);
+  velocidadeMotor2 *= 1.05;
+  if (velocidadeMotor2 > 255) velocidadeMotor2=255;
+  analogWrite(ENB,velocidadeMotor2);
+
+}
+```
+
+  <p align="justify">
   Essa função é utilizada para rotacionar o carro em seu próprio eixo para o lado esquerdo a uma velocidade predeterminada pelos           parâmetros recebidos pela função.</p>
    
 ```
@@ -166,23 +185,7 @@ void direita(int velocidadeMotor1, int velocidadeMotor2){
   
 }
 ```
-  <p align="justify">
-  Enquanto essa outra função realiza o movimento do carro para o sentido frontal, para que isso seja possível de forma correta foram       estipulados valores limites para a velocidade das rodas. Mas caso os motores apresentem o mesmo funcionamento alguns desses valores     poderão ser descartados.</p>
 
-```
-void frente(int velocidadeMotor1, int velocidadeMotor2){
-  digitalWrite(IN1,LOW);
-  digitalWrite(IN2,HIGH);
-  digitalWrite(IN3,LOW);
-  digitalWrite(IN4,HIGH);
-
-  analogWrite(ENA,velocidadeMotor1);
-  velocidadeMotor2 *= 1.05;
-  if (velocidadeMotor2 > 255) velocidadeMotor2=255;
-  analogWrite(ENB,velocidadeMotor2);
-
-}
-```
   <p align="justify">
   Aqui estão declaradas as variáveis utilizadas no cálculo do controlador PID e as que armazenam os valores durante a execução das         medições e as constantes iniciais.</p>
 
