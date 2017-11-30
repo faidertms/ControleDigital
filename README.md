@@ -74,7 +74,13 @@ Projeto seguidor de Parede.<br />
   </p>
 
 # 3.   Implemetação
-# 3.1  Funcionamento
+# 3.1  Melhorias no PID
+<p align="justify">
+  Algumas melhorias foram implementadas no algoritmo PID a fim de torná-lo mais robusto, eficiente, e de forma a 
+	manter a melhor estabilidade do sistema. As melhorias adotadas foram:</p>
+	•	Sample Time<br />
+	
+# 3.2  Funcionamento
    ```
  #include <Servo.h>
    ```
