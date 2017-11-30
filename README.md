@@ -86,6 +86,7 @@ Projeto seguidor de Parede.<br />
 # 3.1.1  Sample Time
 <p align="justify">
   Essa melhoria tem como finalidade definir um tempo de amostragem no qual o controlador PID será aplicado ao sistema de forma frequente. Em outras palavras, o PID será aplicado de tempos em tempos, e esse tempo é chamado de amostra. Nesse projeto essa melhoria torna-se muito importante para garantir que a função que calcula a distância, tenha tempo para poder fazer a leitura do sensor. Como o sensor necessita de um pulso de 10us em nível alto para poder disparar o sinal sonoro, e após isso esperar o sinal de resposta para calcular essa distância, é preciso definir um tempo de amostragem bem maior que 10us, para a leitura ser relizada. O tempo de amostragem escolhido foi de 50ms. Dessa forma o controlador não será aplicado várias vezes em um curto espaço de tempo, evitando assim computações nesnecessárias, e não tardará a ser aplicado, evitando a demora na correção definida no PID. </p>
+
 # 3.2  Funcionamento
    ```
  #include <Servo.h>
