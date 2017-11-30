@@ -104,7 +104,38 @@ Projeto seguidor de Parede.<br />
   }
 
 }
+ ```
+<p align="justify">
+  Na função definirErro o tempo de execução do loop(dt) é calculado pela função "calcularTempo" e esse valor é
+	acumulado na varivável dt. Caso dt atinga esse tempo de amostragem então a correção é aplicada ao sistema. Após a correção ser aplicada, a variável dt é zerada e então o processo se repete.   </p>
+	
    ```
+void definirErro(int setPoint){ 
+  calcularTempo();
+  if(dt >= amostra){
+      distancia = calcularDistancia(echoLateral, trigLateral);
+      if(distancia > 0 && distancia < 60){
+        erro =  setPoint - distancia;
+        double dDistancia = (distancia - ultimaDistancia);
+        i += ki * erro; //Tuning Changes
+        if(i > 15){// +15
+         i = 15;
+        }else if(i < -15){ // -15
+         i = -15;
+        }
+    //Serial.println(d);
+        d = kd * dDistancia;
+        int p = (erro*kp);
+        x = cons + (p - d + i);
+        y = cons - (p - d + i);
+        limiteXY();
+        ultimaDistancia = distancia;
+      }
+      dt = 0;
+  }
+
+}
+```
 
 # 3.2  Funcionamento
    ```
