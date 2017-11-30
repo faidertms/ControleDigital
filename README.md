@@ -123,7 +123,6 @@ void definirErro(int setPoint){
         }else if(i < -15){ // -15
          i = -15;
         }
-    //Serial.println(d);
         d = kd * dDistancia;
         int p = (erro*kp);
         x = cons + (p - d + i);
