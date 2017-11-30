@@ -135,6 +135,9 @@ void definirErro(int setPoint){
 
 }
 ```
+<p align="justify">
+ Com essa melhoria o sistema ainda encontrou-se bastante instável, principalmente por que não havia controle da 
+	velocidade dos motores DC, o que fazia com que o correção do PID fosse aplicada de forma muito brusca, o que levava o sensor de distância perder o referencial. Os vídeos abaixo mostram o comportamento do seguidor de parede com essa melhoria:   </p>
 
 # 3.2  Funcionamento
    ```
