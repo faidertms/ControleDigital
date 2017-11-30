@@ -12,36 +12,40 @@ Projeto seguidor de Parede.<br />
   <p align="justify">
   Este projeto tem como objetivo geral a montagem e a configuração do hardware, bem como a implementação de funções de um robô 
   móvel que seja hábil a locomover-se de maneira autônoma com base na percepção de uma parede. Para a realização deste objetivo 
-  foram usados servos motores, sensores tipo ultrassônico, arduino como controlador e para ajustar a malha PID foi usada a 
+  foram usados motores DC, ponte H, sensor do tipo ultrassônico, arduino como controlador e para ajustar a malha PID foi usada a 
   técnica “tentativa e erro”. A figura 1 abaixo mostra como ficou a implemetação física do projeto:</p><br />
   <p align="center">
-  <img src="https://i.imgur.com/nJyJisb.png"><br/>
+  <img src="https://i.imgur.com/11IvZEE.jpg"><br/>
   <b>Figura 1.</b>
   </p>
  
  # 1.1	Atuadores
-•	2 servos motores.<br />
+•	2 motores DC.<br />
    <p align="justify">
-   Um servo motor é um atuador rotativo ou linear que garante o controle, velocidade e precisão em aplicações de controle de posição em    malha fechada.</p>
+   O Motor DC é um atuador rotativo ou linear que garante o controle, velocidade e precisão em aplicações de controle de posição em malha fechada.</p>
+   
+•	Ponte H.<br />
+   <p align="justify">
+   Ponte H é um circuito electrónico que permite variar velocidades de um motor DC, assim como comutar o sentido de rotação dos motores, através de um sinal PWM. Estes circuitos são muito utilizados em robótica e estão disponíveis em circuitos prontos ou podem ser construídos por componentes.</p>
    
  #   1.2	Sensores
-•	2 sensores ultrassônicos.<br />
+ •	Sensor ultrassônico.<br />
    <p align="justify">
-   Os sensores ultrassônicos são amplamente utilizados para a percepção do ambiente e detecção de obstáculos em muitas aplicações robóticas. Estes sensores são muito bem sucedidos em termos de eficiência de custos, tempo de processamento e precisão.</p>
-   
+   Os sensores ultrassônicos são amplamente utilizados para a percepção do ambiente e detecção de obstáculos em muitas aplicações robóticas. Estes sensores são muito bem sucedidos em termos de eficiência de custos, tempo de processamento e precisão.</p>
+ 
 #  1.3	Controlador
-•	Arduino UNO.<br />
+•	Arduino.<br />
    <p align="justify">
    O arduino é um microcontrolador voltado para prototipação de projetos interativos, sendo o mesmo open (hardware e software) de fácil    manuseio, baixo custo e flexível.</p>
 
 #  1.4	Lista de Materiais
-•	Corpo<br />
-•	Chapa metálica.<br />
-•	2 Servos Motores(MG-995).<br />
-•	2 Rodas para servo motor.<br />
-•	Protoboard e fiação.<br />
-•	2 Sensores Ultrassônicos(HC-SR04).<br />
-•	Arduino Uno.
+•	Corpo de chapa metálica ou plástico.<br />
+•	2 Rodas para os motores.<br />
+•	2 Motores DC.<br />
+•	Ponte H.<br />
+•	Protoboard, fiação e bateria 7~9v.<br />
+•	1 Sensores Ultrassônicos(HC-SR04).<br />
+•	Arduino.
 <br />
 					     
 # 2.	Embasamento teórico/prático
