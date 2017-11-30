@@ -26,7 +26,7 @@ Projeto seguidor de Parede.<br />
    
 •	Ponte H.<br />
    <p align="justify">
-   Ponte H é um circuito electrónico que permite variar velocidades de um motor DC, assim como comutar o sentido de rotação dos motores, através de um sinal PWM. Estes circuitos são muito utilizados em robótica e estão disponíveis em circuitos prontos ou podem ser construídos por componentes.</p>
+   Ponte H é um circuito electrônico que permite variar velocidades de um motor DC, assim como comutar o sentido de rotação dos motores, através de um sinal PWM. Estes circuitos são muito utilizados em robótica e estão disponíveis em circuitos prontos ou podem ser construídos por componentes.</p>
    
  #   1.2	Sensores
  •	Sensor ultrassônico.<br />
