@@ -73,87 +73,8 @@ Projeto seguidor de Parede.<br />
   <b>Figura 4.</b>
   </p>
 
-# 3.   Implemetação
-# 3.1  Melhorias no PID
-<p align="justify">
-  Algumas melhorias foram implementadas no algoritmo PID a fim de torná-lo mais robusto, eficiente, e de forma a 
-	manter a melhor estabilidade do sistema. As melhorias adotadas foram:</p>
-	•	Sample Time<br />
-	•	Derivative Kick<br />
-	•	On-the-fly Tuning changes<br />
-	•	Reset Windup Mitigation<br />
-	
-# 3.1.1  Sample Time
-<p align="justify">
-  Essa melhoria tem como finalidade definir um tempo de amostragem no qual o controlador PID será aplicado ao sistema de forma frequente. Em outras palavras, o PID será aplicado de tempos em tempos, e esse tempo é chamado de amostra. Nesse projeto essa melhoria torna-se muito importante para garantir que a função que calcula a distância, tenha tempo para poder fazer a leitura do sensor. Como o sensor necessita de um pulso de 10us em nível alto para poder disparar o sinal sonoro, e após isso esperar o sinal de resposta para calcular essa distância, é preciso definir um tempo de amostragem bem maior que 10us, para a leitura ser relizada. O tempo de amostragem escolhido foi de 50ms. Dessa forma o controlador não será aplicado várias vezes em um curto espaço de tempo, evitando assim computações nesnecessárias, e não tardará a ser aplicado, evitando a demora na correção definida no PID. A amostra é definida no código pela seguinte função: </p>
-  
-  
-   ```
-   void setAmostra(int Amostra){
-
-    if(Amostra > 0){
-
-    double ratio = (double)Amostra / (double)amostra;
-
-    ki *= ratio;
-
-    kd /= ratio;
-
-    amostra = (unsigned long)Amostra;
-
-  }
-
-}
- ```
-<p align="justify">
-  Na função definirErro o tempo de execução do loop(dt) é calculado pela função "calcularTempo" e esse valor é
-	acumulado na varivável dt. Caso dt atinga esse tempo de amostragem então a correção é aplicada ao sistema. Após a correção ser aplicada, a variável dt é zerada e então o processo se repete.   </p>
-	
-   ```
-void definirErro(int setPoint){ 
-  calcularTempo();
-  if(dt >= amostra){
-      distancia = calcularDistancia(echoLateral, trigLateral);
-      if(distancia > 0 && distancia < 60){
-        erro =  setPoint - distancia;
-        double dDistancia = (distancia - ultimaDistancia);
-        i += ki * erro; //Tuning Changes
-        if(i > 15){// +15
-         i = 15;
-        }else if(i < -15){ // -15
-         i = -15;
-        }
-        d = kd * dDistancia;
-        int p = (erro*kp);
-        x = cons + (p - d + i);
-        y = cons - (p - d + i);
-        limiteXY();
-        ultimaDistancia = distancia;
-      }
-      dt = 0;
-  }
-
-}
-```
-<p align="justify">
- Com essa melhoria o sistema ainda encontrou-se bastante instável, principalmente por que não havia controle da 
-	velocidade dos motores DC, o que fazia com que o correção do PID fosse aplicada de forma muito brusca, o que levava o sensor de distância perder o referencial. Os vídeos abaixo mostram o comportamento do seguidor de parede com essa melhoria:   </p>
-	
-
-  
-  # 3.1.2  Derivative Kick
-<p align="justify">
- : </p>
-  
-  # 3.1.3  On-the-fly Tuning changes
-<p align="justify">
-   </p>
-  
-  # 3.1.4  Reset Windup Mitigation
-<p align="justify">
-   </p>
-
-# 3.2  Funcionamento
+# 3  Implemetação
+# 3.1  Funcionamento
    ```
  #include <Servo.h>
    ```
@@ -344,6 +265,87 @@ void loop() {
   control();
 }
 ```
+
+# 3.2  Melhorias no PID
+<p align="justify">
+  Algumas melhorias foram implementadas no algoritmo PID a fim de torná-lo mais robusto, eficiente, e de forma a 
+	manter a melhor estabilidade do sistema. As melhorias adotadas foram:</p>
+	•	Sample Time<br />
+	•	Derivative Kick<br />
+	•	On-the-fly Tuning changes<br />
+	•	Reset Windup Mitigation<br />
+	
+# 3.2.1  Sample Time
+<p align="justify">
+  Essa melhoria tem como finalidade definir um tempo de amostragem no qual o controlador PID será aplicado ao sistema de forma frequente. Em outras palavras, o PID será aplicado de tempos em tempos, e esse tempo é chamado de amostra. Nesse projeto essa melhoria torna-se muito importante para garantir que a função que calcula a distância, tenha tempo para poder fazer a leitura do sensor. Como o sensor necessita de um pulso de 10us em nível alto para poder disparar o sinal sonoro, e após isso esperar o sinal de resposta para calcular essa distância, é preciso definir um tempo de amostragem bem maior que 10us, para a leitura ser relizada. O tempo de amostragem escolhido foi de 50ms. Dessa forma o controlador não será aplicado várias vezes em um curto espaço de tempo, evitando assim computações nesnecessárias, e não tardará a ser aplicado, evitando a demora na correção definida no PID. A amostra é definida no código pela seguinte função: </p>
+  
+  
+   ```
+   void setAmostra(int Amostra){
+
+    if(Amostra > 0){
+
+    double ratio = (double)Amostra / (double)amostra;
+
+    ki *= ratio;
+
+    kd /= ratio;
+
+    amostra = (unsigned long)Amostra;
+
+  }
+
+}
+ ```
+<p align="justify">
+  Na função definirErro o tempo de execução do loop(dt) é calculado pela função "calcularTempo" e esse valor é
+	acumulado na varivável dt. Caso dt atinga esse tempo de amostragem então a correção é aplicada ao sistema. Após a correção ser aplicada, a variável dt é zerada e então o processo se repete.   </p>
+	
+   ```
+void definirErro(int setPoint){ 
+  calcularTempo();
+  if(dt >= amostra){
+      distancia = calcularDistancia(echoLateral, trigLateral);
+      if(distancia > 0 && distancia < 60){
+        erro =  setPoint - distancia;
+        double dDistancia = (distancia - ultimaDistancia);
+        i += ki * erro; //Tuning Changes
+        if(i > 15){// +15
+         i = 15;
+        }else if(i < -15){ // -15
+         i = -15;
+        }
+        d = kd * dDistancia;
+        int p = (erro*kp);
+        x = cons + (p - d + i);
+        y = cons - (p - d + i);
+        limiteXY();
+        ultimaDistancia = distancia;
+      }
+      dt = 0;
+  }
+
+}
+```
+<p align="justify">
+ Com essa melhoria o sistema ainda encontrou-se bastante instável, principalmente por que não havia controle da 
+	velocidade dos motores DC, o que fazia com que o correção do PID fosse aplicada de forma muito brusca, o que levava o sensor de distância perder o referencial. Os vídeos abaixo mostram o comportamento do seguidor de parede com essa melhoria:   </p>
+	
+
+  
+  # 3.2.2  Derivative Kick
+<p align="justify">
+ : </p>
+  
+  # 3.2.3  On-the-fly Tuning changes
+<p align="justify">
+   </p>
+  
+  # 3.2.4  Reset Windup Mitigation
+<p align="justify">
+   </p>
+
+
 
 # 4.	Conclusão
   <p align="justify">
