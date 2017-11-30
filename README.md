@@ -93,9 +93,7 @@ Projeto seguidor de Parede.<br />
    ```
     
   <p align="justify"> 
-  Na função setup( ) são configurados os pinos utilizados na placa de prototipagem Arduino, essa configuração serve para determinar o     funcionamento de cada um deles, como por exemplo os pinos de trigFrontal e trigLateral, estão configurados para a função saída de       sinal, enquanto que, echoFrontal e echoLateral estão funcionando como entrada. Logo em seguida são determinados os pinos que irão       controlar a velocidade e o sentido da rotação de cada um dos motores, através das funções rodaEsquerda.attach(5) e                       rodaDireita.attach(6).
-
-  Na função setup() são configurados os pinos utilizados na placa de prototipagem arduino. Essa configuração serve para definir quais portas estão sendo controladas pelo arduino. Nesse caso foram definidas algumas portas de saída no arduino que serão entradas no circuito ponte H. O sensor ultrassônico também foi configurado atraves de duas portas, uma de saída(trigLateral) e a outra de entrada(echoLateral). Algumas portas de saída para o ponte H foram inicializadas com LOW. As funções setAmostra, setTunnings e SetOutPutLimits são invocadas para realizar algumas funções específicas que serão detalhadas posteriormente</p>
+   Na função setup() são configurados os pinos utilizados na placa de prototipagem arduino. Essa configuração serve para definir quais portas estão sendo controladas pelo arduino. Nesse caso foram definidas algumas portas de saída no arduino que serão entradas no circuito ponte H. O sensor ultrassônico também foi configurado atraves de duas portas, uma de saída(trigLateral) e a outra de entrada(echoLateral). Algumas portas de saída para o ponte H foram inicializadas com LOW. As funções setAmostra, setTunnings e SetOutPutLimits são invocadas para realizar algumas funções específicas que serão detalhadas posteriormente</p>
 
 ```
  void setup( ){
