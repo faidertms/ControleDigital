@@ -187,61 +187,57 @@ void frente(int velocidadeMotor1, int velocidadeMotor2){
   Aqui estão declaradas as variáveis utilizadas no cálculo do controlador PID e as que armazenam os valores durante a execução das         medições e as constantes iniciais.</p>
 
 ```
-int distancia;
-int ultimaDistancia;
-int erro,x,y,dt;
-int kd=10,kp=3;
-float i,ki = 0.001;
-int cons = 15;
+double distancia = 0;
+double ultimaDistancia;
+double erro, dt;
+int x, y;
+double kd, kp, ki, i, d;
+double errSum, lastErr;
+int cons = 100;
+int amostra = 100; // 1seg
+double outMin, outMax
 ```
   <p align="justify">
   A função definirErro(int setPoint) calcula o erro através da diferença entre o setPoint e a distância do carro à parede, caso o sensor   lateral encontre uma barreira, o controlador irá calcular esse erro e estabelecer um valor para x e y para que o carro permaneça         sempre a uma distância da parede igual ao valor de setPoint, caso contrário será estabelecido valores fixos para x e y para que o       carro mantenha um percurso retilíneo.</p>
 
 ```
 void definirErro(int setPoint){ 
-  ultimaDistancia = distancia;
-  distancia = calcularDistancia(echoLateral,trigLateral);
-  if(distancia > 0){
-    erro =  setPoint - distancia;
-    i += (erro*dt*ki);
-    x = cons + ((erro*kp) + (kd*(distancia - ultimaDistancia)/dt) + i);
-    y = cons - ((erro*kp) + (kd*(distancia - ultimaDistancia)/dt) + i);
+  calcularTempo();
+  if(dt >= amostra){
+      distancia = calcularDistancia(echoLateral, trigLateral);
+      if(distancia > 0 && distancia < 60){
+        erro =  setPoint - distancia;
+        double dDistancia = (distancia - ultimaDistancia);
+        i += ki * erro; //Tuning Changes
+        if(i > 15){// +15
+         i = 15;
+        }else if(i < -15){ // -15
+         i = -15;
+        }
+    //Serial.println(d);
+        d = kd * dDistancia;
+        int p = (erro*kp);
+        x = cons + (p - d + i);
+        y = cons - (p - d + i);
+        limiteXY();
+        ultimaDistancia = distancia;
+      }
+      dt = 0;
   }
-  if(distancia == 0){
-    x = 10;
-    y = 15;
-  }
+
 }
 ```
  <p align="justify">
   Para determinar os valores do integrativo e do derivativo da função PID precisamos calcular o tempo em que o programa leva para         executar um loop completo, esse valor será o dt da função.</p>
 
 ```
-int temp ;
-int tempFinal = millis();
-void calcularTempo(){
-  temp = tempFinal;
-  tempFinal = millis();
-  dt = (tempFinal - temp);
-}
-```
-  <p align="justify">
-  Como atividade extra implementamos também a detecção de barreiras a frente, para isso utilizamos a função frontal( ), que muda o         sentido do carro para o lado esquerdo caso o sensor frontal esteja a menos de 12 cm de uma barreira, caso contrário ela chama a função   calcular erro para verificar se tem barreira ao seu lado, para que ele possa continuar seguindo-a.</p>
+long tempoFinal=0;
+long tempo = 0 ;
 
-```
-int distanciaFrontal;
-void frontal(){
-  distanciaFrontal = calcularDistancia(echoFrontal,trigFrontal);
-  if(distanciaFrontal > 0 && distanciaFrontal <= 12){
-    esquerda(20,20);
-    delay(1000);
-    i=0;
-    distancia = 0;
-    distanciaFrontal = 0;
-  }else{
-    definirErro(20);
-    frente(x,y);
-  }
+void calcularTempo(){
+  tempo = tempoFinal;
+  tempoFinal = millis();
+  dt += (double)(tempoFinal - tempo);
 }
 ```
   <p align="justify">
@@ -249,9 +245,8 @@ void frontal(){
 
 ```
 void loop() {
-  calcularTempo();
-  delay(5);
- frontal();
+  definirErro(20);
+  control();
 }
 ```
 
