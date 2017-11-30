@@ -75,9 +75,6 @@ Projeto seguidor de Parede.<br />
 
 # 3  Implemetação
 # 3.1  Funcionamento
-   ```
- #include <Servo.h>
-   ```
   <p align="justify">
   Definindo as variáveis de controle do projeto, para os dois motores DC e o sensor ultrassônico utilizado</p>
    
@@ -347,18 +344,16 @@ void setTunings(double Kp, double Ki , double Kd){
   kd = Kd / amostraEmSeg;
 }
    </p>
-  
-  # 3.2.4  Reset Windup Mitigation
-<p align="justify">
-   </p>
-```
+  ```
 Essa função recebe os valores de kp, ki e kd e os atualiza utilizando o valor da amostragem já definido anteriormente
 
 
-
- # 3.2.2  Reset WindUp Mitigation
+  # 3.2.4  Reset Windup Mitigation
 <p align="justify">
- : </p>
+   </p>
+
+
+
 
 # 4.	Conclusão
   <p align="justify">
