@@ -324,9 +324,15 @@ void definirErro(int setPoint){
 ```
 <p align="justify">
  Com essa melhoria o sistema ainda encontrou-se bastante instável, principalmente por que não havia controle da 
-	velocidade dos motores DC, o que fazia com que o correção do PID fosse aplicada de forma muito brusca, o que levava o sensor de distância perder o referencial. Os vídeos abaixo mostram o comportamento do seguidor de parede com essa melhoria:   </p>
-	
+	velocidade dos motores DC, o que fazia com que o correção do PID fosse aplicada de forma muito brusca, o que levava o sensor de distância perder o referencial. Os Gifs abaixo mostram o comportamento do seguidor de parede com essa melhoria:   </p>
 
+<p align="center">
+<a href="https://imgflip.com/gif/20a6dg"><img src="https://i.imgflip.com/20a6dg.gif" title="made at imgflip.com"/></a>
+</p>
+
+<p align="center">
+<a href="https://imgflip.com/gif/20a7ml"><img src="https://i.imgflip.com/20a7ml.gif" title="made at imgflip.com"/></a>
+<p>
   
   # 3.2.2  Derivative Kick
 <p align="justify">
