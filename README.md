@@ -118,7 +118,7 @@ Projeto seguidor de Parede.<br />
   digitalWrite(pinTrig, HIGH);
   delayMicroseconds(10);
   digitalWrite(pinTrig, LOW);
-  tempo = pulseIn(pinEcho, HIGH,4500);
+  tempo = pulseIn(pinEcho, HIGH);
   return tempo;
 }
 ```
@@ -132,8 +132,8 @@ Projeto seguidor de Parede.<br />
   Resolvendo essa regra de três temos que o som percorre 29,4 cm/µs, mas o valor retornado pela função dispararPulso( ) é o tempo de       ida e volta do som, então devemos dividir tudo isso ainda por dois para obtermos a distância correta.</p>
   
   ```
-  int calcularDistancia (int pinEcho, int pinTrig){
-  return dispararPulso(pinEcho,pinTrig)/29.4/2;
+ int calcularDistancia (int pinEcho, int pinTrig){
+  return (dispararPulso(pinEcho, pinTrig)/29.4)/2;
 }
 ```
 
@@ -141,19 +141,46 @@ Projeto seguidor de Parede.<br />
   Essa função é utilizada para rotacionar o carro em seu próprio eixo para o lado esquerdo a uma velocidade predeterminada pelos           parâmetros recebidos pela função.</p>
    
 ```
-void esquerda(int velocidadeD,int velocidadeE){
-  rodaEsquerda.write((90-velocidadeD));
-  rodaDireita.write((90-velocidadeE));
+void esquerda(int velocidadeMotor1, int velocidadeMotor2){
+  digitalWrite(IN1,LOW);
+  digitalWrite(IN2,HIGH);
+  digitalWrite(IN3,HIGH);
+  digitalWrite(IN4,LOW);
+  analogWrite(ENA,velocidadeMotor1);
+  analogWrite(ENB,velocidadeMotor2+75);//70 65
+    
+}
+```
+
+ <p align="justify">
+  Essa função é utilizada para rotacionar o carro em seu próprio eixo para o lado direito a uma velocidade predeterminada pelos           parâmetros recebidos pela função.</p>
+   
+```
+void direita(int velocidadeMotor1, int velocidadeMotor2){
+  digitalWrite(IN3,LOW);
+  digitalWrite(IN4,HIGH);
+  digitalWrite(IN1,HIGH);
+  digitalWrite(IN2,LOW);
+  analogWrite(ENA,velocidadeMotor1 + 75);//
+  analogWrite(ENB,velocidadeMotor2);
+  
 }
 ```
   <p align="justify">
   Enquanto essa outra função realiza o movimento do carro para o sentido frontal, para que isso seja possível de forma correta foram       estipulados valores limites para a velocidade das rodas. Mas caso os motores apresentem o mesmo funcionamento alguns desses valores     poderão ser descartados.</p>
 
 ```
-void frente(int velocidadeD, int velocidadeE){
-  velocidadeE = (velocidadeE / 1.5);
-  rodaEsquerda.write((90+velocidadeE));
-  rodaDireita.write((90-velocidadeD));
+void frente(int velocidadeMotor1, int velocidadeMotor2){
+  digitalWrite(IN1,LOW);
+  digitalWrite(IN2,HIGH);
+  digitalWrite(IN3,LOW);
+  digitalWrite(IN4,HIGH);
+
+  analogWrite(ENA,velocidadeMotor1);
+  velocidadeMotor2 *= 1.05;
+  if (velocidadeMotor2 > 255) velocidadeMotor2=255;
+  analogWrite(ENB,velocidadeMotor2);
+
 }
 ```
   <p align="justify">
