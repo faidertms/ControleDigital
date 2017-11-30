@@ -61,7 +61,7 @@ Projeto seguidor de Parede.<br />
   <p align="justify">
   Como é visto na figura 3, foram usadas somente as portas digitais do arduino para os atuadores e sensores, porem para os atuadores as   portas estão em modo pwm. Na parte da alimentação foi usada a porta de 5v para os sensores e a porta Vin para os atuadores e um Gnd     comum para todos.</p>
   <p align="center">
-  <img src="https://i.imgur.com/Cf8QX2J.png"><br/>
+  <img src="https://i.imgur.com/2NhJWR1.png"><br/>
   <b>Figura 3.</b>
   </p>
 
