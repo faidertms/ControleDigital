@@ -379,7 +379,7 @@ void setTunings(double Kp, double Ki , double Kd){
 }
    
   ```
-<p align="justify"> Essa função recebe os valores de kp, ki e kd e os atualiza utilizando o valor da amostragem já definido anteriormente</p>
+<p align="justify"> O  integrativo passa a ser somatorio dando mais estabilidade ao carro quando ele sai do setpoint, nao  precisando chegar perto da parede para a correção surtir efeito como acontecia na melhoria anterior</p>
 
 <p align="center">
 <a href="https://imgflip.com/gif/20ak8g"><img src="https://i.imgflip.com/20ak8g.gif" title="made at imgflip.com"/></a>
