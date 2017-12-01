@@ -51,9 +51,9 @@ Projeto seguidor de Parede.<br />
 # 2.	Embasamento teórico/prático
 # 2.1   Fluxograma
   <p align="justify">
-  O fluxograma mostrado na figura 2 ilustra a cadeia de eventos que ocorre no programa desenvolvido. O cálculo do tempo de execução do     código é utilizado para encontrar “dt” para que possamos encontrar “kd” e “ki”. Posteriormente é disparado um delay de 5 milissegundos   para iniciar a leitura do sensor ultrassônico (foi necessário esse delay, pois foi observado que inicialmente estavam sendo feitas       várias leituras de valores zeros). Depois da leitura o programa define uma rota com base na distância calculada pelo sensor frontal.     Nesse caso, se for detectado um obstáculo a 12 centímetros pelo sensor frontal então o carro vira pra esquerda e volta ao primeiro       evento do programa, caso contrário ele continua o seu trajeto normal realizando as correções necessárias com base nos valores           detectados pelo sensor lateral, para mantê-lo a 20 centímetros da parede. Mais detalhes do funcionamento do sistema são mostrados no     tópico 3(Implementação).</p>
+O fluxograma mostrado na figura 2 ilustra a cadeia de eventos que ocorre no programa desenvolvido. Primeiramente definimos o erro que é a diferença entre o setPoint que é passado como parâmetro da função e a distancia do robô até a parede, mas também, o cálculo do tempo de execução do código que é o nosso “dt” e a própria distancia se fazem necessários para que possamos encontrar “kd” e “ki”. Para se calcular a distancia entre o robô e um obstaculo é verificado se o nosso dt atende a restrição de ser maior ou igual a nossa "amostra" (amostra é um paramento pre-estabelecido que impede que os cálculos do PID sejam feitos varias vezes sem necessidade). Depois da leitura da distância são calculadas todas a variáveis de controle, para manter uma distancia de 20 centímetros do robô até a parede, de posse das variáveis x e y tomas as decisões de direcionar o carro para frente, ou para a esquerda se distanciando da parede e por fim para a direita se aproximando da parede. Mais detalhes do funcionamento do sistema são mostrados no tópico 3(Implementação).</p>
   <p align="center">
-  <img src="https://i.imgur.com/kVH9Ywd.jpg"><br/>
+  <img src="https://i.imgur.com/DIizYcG.jpg"><br/>
   <b>Figura 2.</b>
   </p>
   
@@ -67,7 +67,7 @@ Projeto seguidor de Parede.<br />
 
 # 2.3	Diagrama de Blocos
   <p align="justify">
-  Na figura 4 o controlador, ou seja o arduino utilizado no projeto manda um sinal para o atuador (servos motores), para que esse         componente possa atuar no sistema. De forma paralela o sensor retroalimenta o sistema de controle, mantendo o sistema sempre             alimentado com novos dados(distâncias), que são por sua vez processados pelo programa contido no controlador que envia um sinal de       resposta para o atuador, e assim por diante.</p>
+  Na figura 4 o controlador, ou seja o arduino utilizado no projeto manda um sinal para o atuador, para que esse         componente possa atuar no sistema. De forma paralela o sensor retroalimenta o sistema de controle, mantendo o sistema sempre             alimentado com novos dados(distâncias), que são por sua vez processados pelo programa contido no controlador que envia um sinal de       resposta para o atuador, e assim por diante.</p>
   <p align="center">
   <img src="https://i.imgur.com/QJ9NOH3.jpg"><br/>
   <b>Figura 4.</b>
@@ -174,7 +174,7 @@ void esquerda(int velocidadeMotor1, int velocidadeMotor2){
   digitalWrite(IN3,HIGH);
   digitalWrite(IN4,LOW);
   analogWrite(ENA,velocidadeMotor1);
-  analogWrite(ENB,velocidadeMotor2+75);//70 65
+  analogWrite(ENB,velocidadeMotor2+75);
     
 }
 ```
@@ -188,7 +188,7 @@ void direita(int velocidadeMotor1, int velocidadeMotor2){
   digitalWrite(IN4,HIGH);
   digitalWrite(IN1,HIGH);
   digitalWrite(IN2,LOW);
-  analogWrite(ENA,velocidadeMotor1 + 75);//
+  analogWrite(ENA,velocidadeMotor1 + 75);
   analogWrite(ENB,velocidadeMotor2);
   
 }
@@ -205,7 +205,7 @@ int x, y;
 double kd, kp, ki, i, d;
 double errSum, lastErr;
 int cons = 100;
-int amostra = 100; // 1seg
+int amostra = 100;
 double outMin, outMax
 ```
   <p align="justify">
@@ -219,13 +219,12 @@ void definirErro(int setPoint){
       if(distancia > 0 && distancia < 60){
         erro =  setPoint - distancia;
         double dDistancia = (distancia - ultimaDistancia);
-        i += ki * erro; //Tuning Changes
-        if(i > 15){// +15
+        i += ki * erro;
+        if(i > 15){
          i = 15;
-        }else if(i < -15){ // -15
+        }else if(i < -15){
          i = -15;
         }
-    //Serial.println(d);
         d = kd * dDistancia;
         int p = (erro*kp);
         x = cons + (p - d + i);
@@ -304,10 +303,10 @@ void definirErro(int setPoint){
       if(distancia > 0 && distancia < 60){
         erro =  setPoint - distancia;
         double dDistancia = (distancia - ultimaDistancia);
-        i += ki * erro; //Tuning Changes
-        if(i > 15){// +15
+        i += ki * erro;
+        if(i > 15){
          i = 15;
-        }else if(i < -15){ // -15
+        }else if(i < -15){
          i = -15;
         }
         d = kd * dDistancia;
