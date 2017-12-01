@@ -78,7 +78,7 @@ Projeto seguidor de Parede.<br />
   <p align="justify">
   Definindo as variáveis de controle do projeto, para os dois motores DC e o sensor ultrassônico utilizado</p>
    
-   ```
+   ``` ino
    int ENA = 3;
    int ENB = 5; 
    int IN1 = 7;
@@ -92,7 +92,7 @@ Projeto seguidor de Parede.<br />
   <p align="justify"> 
    Na função setup() são configurados os pinos utilizados na placa de prototipagem arduino. Essa configuração serve para definir quais portas estão sendo controladas pelo arduino. Nesse caso foram definidas algumas portas de saída no arduino que serão entradas no circuito ponte H. O sensor ultrassônico também foi configurado atraves de duas portas, uma de saída(trigLateral) e a outra de entrada(echoLateral). Algumas portas de saída para o ponte H foram inicializadas com LOW. As funções setAmostra, setTunnings e SetOutPutLimits são invocadas para realizar algumas funções específicas que serão detalhadas posteriormente</p>
 
-```
+``` ino
  void setup( ){
 
   pinMode(ENA,OUTPUT);
@@ -120,7 +120,7 @@ Projeto seguidor de Parede.<br />
   <p align="justify">
   Como o próprio nome já diz a função dispararPulso (int pinEcho, int pinTrig) é responsável por disparar um pulso de sinal digital por   10µs, através dos comandos digitalWrite(pinTrig, HIGH), delayMicroseconds(10) e digitalWrite(pinTrig, LOW) no pino de trig, essa         sequência de comandos dá início a leitura do sensor ultrassônico, que funciona da seguinte forma, o emissor dispara uma onda sonora     de alta frequência que esbarra em algum obstáculo e reporta para o receptor, enquanto isso é medido o tempo total desse percurso e       esse intervalo é estimado em µs, esse valor é retornado através do pino de echo do sensor e é armazenado na variável tempo.</p>
   
-  ```
+  ``` ino
   int dispararPulso (int pinEcho, int pinTrig){
   float tempo;
   digitalWrite(pinTrig, HIGH);
@@ -139,7 +139,7 @@ Projeto seguidor de Parede.<br />
   <p align="justify">
   Resolvendo essa regra de três temos que o som percorre 29,4 cm/µs, mas o valor retornado pela função dispararPulso( ) é o tempo de       ida e volta do som, então devemos dividir tudo isso ainda por dois para obtermos a distância correta.</p>
   
-  ```
+  ``` ino
  int calcularDistancia (int pinEcho, int pinTrig){
   return (dispararPulso(pinEcho, pinTrig)/29.4)/2;
 }
@@ -149,7 +149,7 @@ Projeto seguidor de Parede.<br />
   Essa função é utilizada para rotacionar o carro em seu próprio eixo para a frente, e recebe como parãmetros
 	as velocidades das duas rodas.</p>
 
-```
+``` ino
 void frente(int velocidadeMotor1, int velocidadeMotor2){
   digitalWrite(IN1,LOW);
   digitalWrite(IN2,HIGH);
@@ -167,7 +167,7 @@ void frente(int velocidadeMotor1, int velocidadeMotor2){
   <p align="justify">
   Essa função é utilizada para rotacionar o carro em seu próprio eixo para o lado esquerdo a uma velocidade predeterminada pelos           parâmetros recebidos pela função.</p>
    
-```
+``` ino
 void esquerda(int velocidadeMotor1, int velocidadeMotor2){
   digitalWrite(IN1,LOW);
   digitalWrite(IN2,HIGH);
@@ -182,7 +182,7 @@ void esquerda(int velocidadeMotor1, int velocidadeMotor2){
  <p align="justify">
   Essa função é utilizada para rotacionar o carro em seu próprio eixo para o lado direito a uma velocidade predeterminada pelos           parâmetros recebidos pela função.</p>
    
-```
+``` ino
 void direita(int velocidadeMotor1, int velocidadeMotor2){
   digitalWrite(IN3,LOW);
   digitalWrite(IN4,HIGH);
@@ -197,7 +197,7 @@ void direita(int velocidadeMotor1, int velocidadeMotor2){
   <p align="justify">
   Aqui estão declaradas as variáveis utilizadas no cálculo do controlador PID e as que armazenam os valores durante a execução das         medições e as constantes iniciais.</p>
 
-```
+``` ino
 double distancia = 0;
 double ultimaDistancia;
 double erro, dt;
@@ -211,7 +211,7 @@ double outMin, outMax
   <p align="justify">
   A função definirErro(int setPoint) calcula o erro através da diferença entre o setPoint e a distância do carro à parede, caso o sensor   lateral encontre uma barreira, o controlador irá calcular esse erro e estabelecer um valor para x e y para que o carro permaneça         sempre a uma distância da parede igual ao valor de setPoint, caso contrário será estabelecido valores fixos para x e y para que o       carro mantenha um percurso retilíneo.</p>
 
-```
+``` ino
 void definirErro(int setPoint){ 
   calcularTempo();
   if(dt >= amostra){
@@ -241,7 +241,7 @@ void definirErro(int setPoint){
  <p align="justify">
   Para determinar os valores do integrativo e do derivativo da função PID precisamos calcular o tempo em que o programa leva para         executar um loop completo, esse valor será o dt da função.</p>
 
-```
+``` ino
 long tempoFinal=0;
 long tempo = 0 ;
 
@@ -254,7 +254,7 @@ void calcularTempo(){
   <p align="justify">
   Esse é o laço principal do programa onde chamamos as funções responsáveis pelo funcionamento do carro.</p>
 
-```
+``` ino
 void loop() {
   definirErro(20);
   control();
@@ -275,7 +275,7 @@ void loop() {
   Essa melhoria tem como finalidade definir um tempo de amostragem no qual o controlador PID será aplicado ao sistema de forma frequente. Em outras palavras, o PID será aplicado de tempos em tempos, e esse tempo é chamado de amostra. Nesse projeto essa melhoria torna-se muito importante para garantir que a função que calcula a distância, tenha tempo para poder fazer a leitura do sensor. Como o sensor necessita de um pulso de 10us em nível alto para poder disparar o sinal sonoro, e após isso esperar o sinal de resposta para calcular essa distância, é preciso definir um tempo de amostragem bem maior que 10us, para a leitura ser relizada. O tempo de amostragem escolhido foi de 50ms. Dessa forma o controlador não será aplicado várias vezes em um curto espaço de tempo, evitando assim computações nesnecessárias, e não tardará a ser aplicado, evitando a demora na correção definida no PID. A amostra é definida no código pela seguinte função: </p>
   
   
-   ```
+   ``` ino
    void setAmostra(int Amostra){
 
     if(Amostra > 0){
@@ -296,7 +296,7 @@ void loop() {
   Na função definirErro o tempo de execução do loop(dt) é calculado pela função "calcularTempo" e esse valor é
 	acumulado na varivável dt. Caso dt atinga esse tempo de amostragem então a correção é aplicada ao sistema. Após a correção ser aplicada, a variável dt é zerada e então o processo se repete.   </p>
 	
-   ```
+   ``` ino
 void definirErro(int setPoint){ 
   calcularTempo();
   if(dt >= amostra){
@@ -327,22 +327,51 @@ void definirErro(int setPoint){
 	velocidade dos motores DC, o que fazia com que o correção do PID fosse aplicada de forma muito brusca, o que levava o sensor de distância perder o referencial. Os Gifs abaixo mostram o comportamento do seguidor de parede com essa melhoria:   </p>
 
 <p align="center">
-<a href="https://imgflip.com/gif/20a6dg"><img src="https://i.imgflip.com/20a6dg.gif" title="made at imgflip.com"/></a>
+<a href="https://imgflip.com/gif/20akdj"><img src="https://i.imgflip.com/20akdj.gif" title="made at imgflip.com"/></a>
 </p>
 
 <p align="center">
 <a href="https://imgflip.com/gif/20a7ml"><img src="https://i.imgflip.com/20a7ml.gif" title="made at imgflip.com"/></a>
 <p>
   
-  # 3.2.2  Derivative Kick
+  # 3.2.2  Reset Windup Mitigation
 <p align="justify">
- : </p>
-  
+o Reset Windup Mitigation estabelece limites para o sinal de pwm que enviamos para o motor das rodas evitando que quando o ganho do controlador mais a constante de velocidade excedessem o limite superior de 255 e o limite inferior de 0 (para valores negativos).
+
+``` ino
+void limiteXY(){
+   if(x > outMax){ 
+    x = outMax;
+   }else if(x < outMin){
+    x = outMin;
+   }
+   if(y > outMax){ 
+    y = outMax;
+   }else if(y < outMin){
+    y = outMin;
+   }
+}
+
+void SetOutputLimits(double Min, double Max){
+   if(Min < Max){
+     outMin = Min;
+     outMax = Max;
+   }
+}
+```
+	
+Esta função sempre deixa a correção aplicada dentro dessa faixa, assim não teremos comportamentos imprevistos ou indesejados.
+</p>
+
+<p align="center">
+<a href="https://imgflip.com/gif/20ajqw"><img src="https://i.imgflip.com/20ajqw.gif" title="made at imgflip.com"/></a>
+</p>
+
   # 3.2.3  On-the-fly Tuning changes
 <p align="justify">
 A função utilizada para implementar essa melhoria foi a seguinte:</p>
 	
-```
+``` ino
 void setTunings(double Kp, double Ki , double Kd){
   double amostraEmSeg = ((double)amostra/1000);
   kp = Kp;
@@ -353,13 +382,28 @@ void setTunings(double Kp, double Ki , double Kd){
   ```
 <p align="justify"> Essa função recebe os valores de kp, ki e kd e os atualiza utilizando o valor da amostragem já definido anteriormente</p>
 
+<p align="center">
+<a href="https://imgflip.com/gif/20ak8g"><img src="https://i.imgflip.com/20ak8g.gif" title="made at imgflip.com"/></a>
+</p>
 
-  # 3.2.4  Reset Windup Mitigation
+  # 3.2.4  Derivative Kick
 <p align="justify">
-   </p>
+Esta Melhoria foi aplicada pois como o Erro=Setpoint-Entrada qualquer modificação no setpoint alterava também o erro, a derivada desta modificação gerava um valor muito grande que entrava no cálculo do PID e resultava em um pico indesejável na saída. Para solucionar este problema foi usada a "Derivação na Medição" que é quando o setpoint é constante e a derivada do erro fica igual a derivada negativa da entrada, isso acaba sendo uma solução perfeita, em vez de adicionar (Kd * derivada do Erro), subtrai-se (Kd * derivada da entrada).
+	
+``` ino
+	d = kd * dDistancia;
+        int p = (erro*kp);
+        x = cons + (p - d + i);
+        y = cons - (p - d + i);
+        limiteXY();
+        ultimaDistancia = distancia;
+```
 
+Derivative Kick e  On-the-fly Tuning changes ajudam nos ajustes finos do controlador manipulando as variáveis kd e ki respectivamente, isso deu ao nosso projeto em particular um trajetória mais retilínea ao percurso do robô e variações com um baixíssimo grau de erros, diferentemente do seu comportamento quando iniciamos o nosso projeto.
 
-
+<p align="center">
+<a href="https://imgflip.com/gif/20akay"><img src="https://i.imgflip.com/20akay.gif" title="made at imgflip.com"/></a>
+</p>
 
 # 4.	Conclusão
   <p align="justify">
