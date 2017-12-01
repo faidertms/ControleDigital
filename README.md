@@ -335,7 +335,7 @@ void definirErro(int setPoint){
   
   # 3.2.2  Reset Windup Mitigation
 <p align="justify">
-o Reset Windup Mitigation estabelece limites para o sinal de pwm que enviamos para o motor das rodas evitando que quando o ganho do controlador mais a constante de velocidade excedessem o limite superior de 255 e o limite inferior de 0 (para valores negativos).
+o Reset Windup Mitigation estabelece limites para o sinal de pwm que enviamos para o motor das rodas evitando que quando o ganho do controlador mais a constante de velocidade excedessem o limite superior de 255 e o limite inferior de 0 (para valores negativos). No nosso caso o reset foi aplicado para diminuir a diferença da velocidade entre os motores , em torno de 50~60 , com esta alteração o carro não faz correções bruscas como acontecia quando so tinha o simple time e tambem foi limitado o valor do integrativo evitando que o carro desestabilize e perca seu referencial.
 
 ``` ino
 void limiteXY(){
